@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Recipe Info</title>
+</head>
+<body>
+	<h2>{{ recipe.name }}</h2>
+	<p>Id: {{ recipe.id }}</p>
+	<p>Name: {{ recipe.name }}</p>
+	<p>Serves: {{ recipe.recipe_yield }}</p>
+
+	<h2>Ingredients</h2>
+
+	<ul>
+		{% for ingr in recipeIngredients %}
+			<li>{{ ingr.ingr.name }} {{ ingr.quantity }} 
+				<a href="{% url 'ingredient-page' ingr.ingr_id %}">(i)</a></li>
+			<!--li><a href="{% url 'ingredient-page' ingr.ingr_id %}">{{ ingr.ingr.name }}</a></li-->
+		{% empty %}
+			<li>No ingredients.</li>
+		{% endfor %}
+	</ul>
+
+
+
+	<a href="{% url 'recipes-page' %}">Back to recipes</a>
+
+</body>
+</html>
