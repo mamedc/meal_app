@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Ingredients</title>
+	<title>All Ingredients</title>
 </head>
 <body>
 	<h2>Ingredients</h2>
@@ -11,10 +11,6 @@
 			<li>
 			    {{ ingredient.name }}, {{ ingredient.unit }} 
 			    <a href="{% url 'ingredient-page' ingredient.id %}">(i)</a>
-
-
-
-
 		 	</li>
 		{% endfor %}
 	</ul>
