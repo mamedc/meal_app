@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from ingredients import views as ingrs_views
+from users import views as user_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +29,6 @@ urlpatterns = [
     path('recipe/<int:recipe_id>', ingrs_views.recipe, name='recipe-page'),
     path('recipes/add_recipe/', ingrs_views.add_recipe_page, name='add_recipe-page'),
     path('recipes/add_recipe_submit/', ingrs_views.add_recipe_submit, name='add_recipe_submit-page'),
+
+    path('register/', user_views.register, name='register-page'),
 ]

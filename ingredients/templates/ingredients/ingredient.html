@@ -14,8 +14,7 @@
 
 	<ul>
 		{% for recipe in recipes %}
-			<li>
-				<a href="{% url 'recipe-page' recipe.recipe_id %}">{{ recipe.recipe.name }}</a></li>
+			<li><a href="{% url 'recipe-page' recipe.recipe_id %}">{{ recipe.recipe.name }}</a></li>
 		{% empty %}
 			<li>No recipes.</li>
 		{% endfor %}
