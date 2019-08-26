@@ -26,5 +26,6 @@ urlpatterns = [
     path('ingredient/<int:ingredient_id>', ingrs_views.ingredient, name='ingredient-page'),
     path('recipes/', ingrs_views.recipes, name='recipes-page'),
     path('recipe/<int:recipe_id>', ingrs_views.recipe, name='recipe-page'),
-    #path('ingredients/', include('ingredients.urls')),
+    path('recipes/add_recipe/', ingrs_views.add_recipe_page, name='add_recipe-page'),
+    path('recipes/add_recipe_submit/', ingrs_views.add_recipe_submit, name='add_recipe_submit-page'),
 ]
