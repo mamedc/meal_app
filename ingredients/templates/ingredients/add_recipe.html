@@ -1,25 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
+	
 	<title></title>
+
+	<script>
+	form_count = Number($("[name=extra_field_count]").val());
+	// get extra form count so we know what index to use for the next item.
+
+	$("#add-another").click(function() {
+	    form_count ++;
+
+	    element = $('<input type="text"/>');
+	    element.attr('name', 'extra_field_' + form_count);
+	    $("#forms").append(element);
+	    // build element and append it to our forms container
+
+	    $("[name=extra_field_count]").val(form_count);
+	    // increment form count so our view knows to populate 
+	    // that many fields for validation
+	})
+	</script>
+
 </head>
 <body>
 	<h2>Add a New Recipe</h2>
 
-	<form action="{% url 'add_recipe_submit-page' %}" method="post">
-		
-		
-
-		<label for="recipe_name">Recipe name: </label>
-	    <input type="text" name="recipe_name" id="recipe_name">
-
-
-		<select name="ingredient">
-			{% for ingr in ingredients %}
-				<option value="{{ ingr.name }}">{{ ingr.name }}</option>
-			{% endfor %}
-		</select>
+	<form>
+	    <div id="forms">
+	        {{ form.as_p }}
+	    </div>
+	    <button id="add-another">add another</button>
+	    <input type="submit" />
 	</form>
+	
 
 </body>
 </html>
+

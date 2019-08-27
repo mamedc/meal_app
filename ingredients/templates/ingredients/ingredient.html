@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Ingredient Info</title>
-</head>
-<body>
+{% extends "ingredients/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div id="div_1">	
 	<h2>{{ ingredient.name }}</h2>
 	<p>Id: {{ ingredient.id }}</p>
 	<p>Unit: {{ ingredient.unit }}</p>
@@ -23,5 +22,5 @@
 
 	<a href="{% url 'ingredients-page' %}">Back to all ingredients</a>
 
-</body>
-</html>
+</div>
+{% endblock content %}

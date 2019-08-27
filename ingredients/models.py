@@ -1,11 +1,14 @@
 from django.db import models
+from django.urls import reverse
+
 
 
 class Ingredient_Unit(models.Model):
-	unit = models.CharField(max_length=16)
-
+	unit = models.CharField(max_length=16, unique=True)
+	
 	def __str__(self):
 		return self.unit
+
 
 
 class Ingredient(models.Model):
@@ -16,6 +19,10 @@ class Ingredient(models.Model):
 	def __str__(self):
 		return f"{self.name}, {self.unit}, {self.wiki}"
 
+	def get_absolute_url(self):
+		return reverse('ingredient-page', kwargs={'ingredient_id': self.pk})
+
+
 
 class Recipe(models.Model):
 	name = models.CharField(max_length=64)
@@ -24,8 +31,6 @@ class Recipe(models.Model):
 
 	def __str__(self):
 		return f"{self.name}, {self.recipe_yield}"
-
-
 class IngrQuantity(models.Model):
 	recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
 	ingr = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
