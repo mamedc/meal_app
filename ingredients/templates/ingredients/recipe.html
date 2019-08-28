@@ -1,15 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Recipe Info</title>
-</head>
-<body>
-	<h2>{{ recipe.name }}</h2>
-	<p>Id: {{ recipe.id }}</p>
-	<p>Name: {{ recipe.name }}</p>
+{% extends "ingredients/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div id="div_1">
+
+	<h3>{{ recipe.name }}</h3>
 	<p>Serves: {{ recipe.recipe_yield }}</p>
 
-	<h2>Ingredients</h2>
+	<br>
+	<h4>Ingredients</h4>
 
 	<ul>
 		{% for ingr in recipeIngredients %}
@@ -21,7 +20,5 @@
 		{% endfor %}
 	</ul>
 
-	
-
-</body>
-</html>
+</div>
+{% endblock content %}

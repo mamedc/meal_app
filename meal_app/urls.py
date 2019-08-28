@@ -36,8 +36,8 @@ urlpatterns = [
 
     path('ingredients/new/', IngredientCreateView.as_view(), name='ingredient-create'),
     
-    #path('recipes/', ingrs_views.recipes, name='recipes-page'),
-    path('recipes/', RecipeListView.as_view(), name='recipes-page'),
+    path('recipes/', ingrs_views.recipes, name='recipes-page'),
+    #path('recipes/', RecipeListView.as_view(), name='recipes-page'),
     
     path('recipe/<int:recipe_id>/', ingrs_views.recipe, name='recipe-page'),
     #path('recipe/<int:pk>/', RecipeDetailView.as_view(), name='recipe-page'),

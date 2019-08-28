@@ -17,7 +17,7 @@ class Ingredient(models.Model):
 	wiki = models.URLField(max_length=250, default='')
 	
 	def __str__(self):
-		return f"{self.name}, {self.unit}, {self.wiki}"
+		return f"{self.name}, {self.unit}"
 
 	def get_absolute_url(self):
 		return reverse('ingredient-page', kwargs={'ingredient_id': self.pk})
@@ -28,9 +28,13 @@ class Recipe(models.Model):
 	name = models.CharField(max_length=64)
 	recipe_yield = models.IntegerField()
 	recipeIngredients = models.ManyToManyField(Ingredient, through='IngrQuantity', related_name='rec_ingredients')
+	instructions = models.TextField()
 
 	def __str__(self):
-		return f"{self.name}, {self.recipe_yield}"
+		return f"{self.name}"
+
+
+
 class IngrQuantity(models.Model):
 	recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
 	ingr = models.ForeignKey(Ingredient, on_delete=models.CASCADE)

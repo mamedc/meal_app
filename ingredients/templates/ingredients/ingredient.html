@@ -2,14 +2,20 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div id="div_1">	
-	<h2>{{ ingredient.name }}</h2>
-	<p>Id: {{ ingredient.id }}</p>
-	<p>Unit: {{ ingredient.unit }}</p>
-	<p>Wiki: <a href="{{ ingredient.wiki }}" target="_blank">{{ ingredient.wiki }}</a></p>
+<div id="div_1">
 
-
-	<h2>Recipes</h2>
+	<h2>{{ ingredient.name }}
+		<span id='wiki_link'>
+			<a href="{{ ingredient.wiki }}" target="_blank">
+				<i class="fab fa-wikipedia-w"></i>
+			</a>
+		</span>
+	</h2>
+	
+	<p>{{ ingredient.unit }}</p>
+	
+	<br>
+	<h4>Related Recipes</h4>
 
 	<ul>
 		{% for recipe in recipes %}
@@ -19,8 +25,8 @@
 		{% endfor %}
 	</ul>
 
-
-	<a href="{% url 'ingredients-page' %}">Back to all ingredients</a>
+	<br>
+	<a href="{% url 'manage_ingredient' %}">Back to all ingredients</a>
 
 </div>
 {% endblock content %}

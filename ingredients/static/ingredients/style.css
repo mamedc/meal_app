@@ -1,13 +1,21 @@
+/*
 body {
 	background:#f0dca5;
 }
-    
- #div_1 {
-	padding:20px 20px 20px 20px; 
+*/
+
+/*    
+#div_1 {
+	padding:50px 20px 20px 20px; 
 	width: 75%; 
 	margin: 0 auto;
 	border-radius: 3px;
 	background-color: #fad764;
+}
+*/
+   
+#div_1 {
+	padding:20px 5px 5px 20px; 
 }
 
 #table_id {
@@ -16,4 +24,8 @@ body {
     
 .dataTables_filter {
 	float: right !important;
+}
+
+#wiki_link {
+  font-size: .5em;
 }

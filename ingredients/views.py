@@ -1,6 +1,6 @@
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.urls import reverse, resolve
 from django.views.generic import ListView, DetailView, CreateView, FormView, TemplateView
 from .models import Ingredient, Recipe, IngrQuantity
 from .forms import RecipeForm
@@ -13,7 +13,9 @@ def ingredients(request):
 
 
 def recipes(request):
-	context = {'recipes': Recipe.objects.all()}
+	context = {
+		'current_url': resolve(request.path_info).url_name, 
+		'recipes': Recipe.objects.all()}
 	return render(request, 'ingredients/recipes.html', context)
 
 
@@ -185,7 +187,11 @@ from django.forms.models import modelformset_factory
 from django.shortcuts import render_to_response
 
 def manage_ingredient(request):
-    context = {'ingredients': Ingredient.objects.all()}
+	
+	context = {
+		'current_url': resolve(request.path_info).url_name, 
+		'ingredients': Ingredient.objects.all()}
+
     #IngredientFormSet = modelformset_factory(
     #	Ingredient, fields=('name', 'unit', 'wiki'))
     #if request.method == 'POST':
@@ -198,4 +204,4 @@ def manage_ingredient(request):
     #return render_to_response("ingredients/manage_ingredients.html", {
     #    "formset": formset,
     #})
-    return render(request, 'ingredients/manage_ingredients.html', context)
+	return render(request, 'ingredients/manage_ingredients.html', context)
