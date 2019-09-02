@@ -1,0 +1,322 @@
+{% extends "ingredients/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div id="div_1">
+
+<h5>Add Base Recipe</h5><br>
+
+<form action="/add_baserecipe/" method="POST" class="needs-validation" novalidate>
+{% csrf_token %}
+{{ form.non_field_errors }}
+
+  
+<!-- Base recipe name --------------------------------------------------------->
+<div class="form-group">
+	{{ form.name.errors }}
+	<label for="id_name">Name</label>
+	<input type="text" class="form-control" id="id_name" aria-describedby="nameHelp" placeholder="Ex. Pesto" autocomplete="off" required>
+	<div class="invalid-feedback">Required field.</div>
+</div>
+
+
+<!-- Base recipe yield and unit ----------------------------------------------->
+<div class="form-row">
+	<div class="form-group col">
+		{{ form.brec_yield_value.errors }}
+		<label for="id_brec_yield_value">Yield</label>
+		<input type="number" class="form-control" id="id_brec_yield_value" placeholder="Ex. 1.5" required>
+		<div class="invalid-feedback">Required field.</div>
+	</div>
+
+	<div class="form-group col-auto">
+		{{ form.brec_yield_unit.errors }}
+		<label for="id_brec_yield_unit">Unit</label>
+	    <select class="form-control" id="id_brec_yield_unit" required>
+			{% for value, text in form.brec_yield_unit.field.choices %}
+				<option>{{ text }}</option>
+			{% endfor %}
+	    </select>
+		<div class="invalid-feedback">Required field.</div>
+	</div>
+</div>
+
+<br>
+<h5>
+	Ingredients
+	<button type="button" class="btn btn-success btn-sm" id="crt_btn"><i class="fas fa-plus"></i></button>
+	<button type="button" class="btn btn-danger  btn-sm" id="del_btn"><i class="fas fa-minus"></i></button>
+</h5>
+<br>
+<!--h3 id='counter_id'>4</h3-->
+
+<!-- Form sets of ingredient/amount/unit -------------------------------------->
+<div id="ingr_form_all_ingrs" class="form-group">	
+	<!-- 1 -->
+	<div id="ingr_set_1" class="form-row">
+		<!-- Name -->
+		<div class="form-group col">
+  			{{ form.brec_ingr_name_1.errors }}
+  			<label for="id_brec_ingr_name_1">Ingredient</label>
+				<select class="form-control" id="id_brec_ingr_name_1" required>
+					{% for value, text in form.brec_ingr_name_1.field.choices %}
+						<option>{{ text }}</option>
+					{% endfor %}
+			    </select>
+			<div class="invalid-feedback">Required field.</div>
+		</div>
+		<!-- Amount -->
+		<div class="form-group col-auto">
+  			{{ form.brec_ingr_val_1.errors }}
+  			<label for="id_brec_ingr_val_1">Amount</label>
+			<input type="number" class="form-control" id="id_brec_ingr_val_1" required>
+			<div class="invalid-feedback">Required field.</div>
+		</div>
+		<!-- Unit -->
+		<div class="form-group col-auto">
+  			{{ form.brec_ingr_unit_1.errors }}
+  			<label for="id_brec_ingr_unit_1">Unit</label>
+			    <select class="form-control" id="id_brec_ingr_unit_1" required>
+					{% for value, text in form.brec_ingr_unit_1.field.choices %}
+						<option>{{ text }}</option>
+					{% endfor %}
+			    </select>
+			<div class="invalid-feedback">Required field.</div>
+		</div>
+	</div>
+
+	<!-- 2 -->
+	<div id="ingr_set_2" class="form-row">
+		<!-- Name -->
+		<div class="form-group col">
+  			{{ form.brec_ingr_name_2.errors }}
+				<select class="form-control" id="id_brec_ingr_name_2" required>
+					{% for value, text in form.brec_ingr_name_2.field.choices %}
+						<option>{{ text }}</option>
+					{% endfor %}
+			    </select>
+			<div class="invalid-feedback">Required field.</div>
+		</div>
+		<!-- Amount -->
+		<div class="form-group col-auto">
+  			{{ form.brec_ingr_val_2.errors }}
+			<input type="number" class="form-control" id="id_brec_ingr_val_2" required>
+			<div class="invalid-feedback">Required field.</div>
+		</div>
+		<!-- Unit -->
+		<div class="form-group col-auto">
+  			{{ form.brec_ingr_unit_2.errors }}
+			    <select class="form-control" id="id_brec_ingr_unit_2" required>
+					{% for value, text in form.brec_ingr_unit_2.field.choices %}
+						<option>{{ text }}</option>
+					{% endfor %}
+			    </select>
+			<div class="invalid-feedback">Required field.</div>
+		</div>
+	</div>
+
+	<!-- 3 -->
+	<div id="ingr_set_3" class="form-row">
+		<!-- Name -->
+		<div class="form-group col">
+  			{{ form.brec_ingr_name_3.errors }}
+				<select class="form-control" id="id_brec_ingr_name_3" required>
+					{% for value, text in form.brec_ingr_name_3.field.choices %}
+						<option>{{ text }}</option>
+					{% endfor %}
+			    </select>
+			<div class="invalid-feedback">Required field.</div>
+		</div>
+		<!-- Amount -->
+		<div class="form-group col-auto">
+  			{{ form.brec_ingr_val_3.errors }}
+			<input type="number" class="form-control" id="id_brec_ingr_val_3" required>
+			<div class="invalid-feedback">Required field.</div>
+		</div>
+		<!-- Unit -->
+		<div class="form-group col-auto">
+  			{{ form.brec_ingr_unit_3.errors }}
+			    <select class="form-control" id="id_brec_ingr_unit_3" required>
+					{% for value, text in form.brec_ingr_unit_3.field.choices %}
+						<option>{{ text }}</option>
+					{% endfor %}
+			    </select>
+			<div class="invalid-feedback">Required field.</div>
+		</div>
+	</div>
+
+	<!-- 4 -->
+	<div id="ingr_set_4" class="form-row">
+		<!-- Name -->
+		<div class="form-group col">
+			<select class="form-control" id="id_brec_ingr_name_4" required>
+				{% for value, text in form.brec_ingr_name_4.field.choices %}
+					<option>{{ text }}</option>
+				{% endfor %}
+		    </select>
+			<div class="invalid-feedback">Required field.</div>
+		</div>
+		<!-- Amount -->
+		<div class="form-group col-auto">
+  			<input type="number" class="form-control" id="id_brec_ingr_val_4" required>
+			<div class="invalid-feedback">Required field.</div>
+		</div>
+		<!-- Unit -->
+		<div class="form-group col-auto">
+		    <select class="form-control" id="id_brec_ingr_unit_4" required>
+				{% for value, text in form.brec_ingr_unit_4.field.choices %}
+					<option>{{ text }}</option>
+				{% endfor %}
+		    </select>
+			<div class="invalid-feedback">Required field.</div>
+		</div>
+	</div>
+</div>
+
+<!-- Procedures -------------------------------------->
+<div class="form-group">
+	<label for="id_procedure">Base recipe procedure</label>
+    <textarea class="form-control" id="id_procedure" rows="6" required></textarea>
+    <div class="invalid-feedback">Please provide a valid city.</div>
+</div>
+
+
+<br>
+<div>
+	<button type="submit" class="btn btn-secondary btn-lg btn-block">Add Base Recipe</button>
+</div>
+
+</form>
+</div>	
+
+
+<script>
+	Object.size = function(obj) {
+	    var size = 0, key;
+	    for (key in obj) {
+	        if (obj.hasOwnProperty(key)) size++;
+    	}
+    	return size;
+	};
+
+
+	let form_counter = 4
+
+	document.addEventListener('DOMContentLoaded', function() {
+		document.querySelector('#del_btn').onclick = remove_last_ingr_set;
+	});
+
+	document.addEventListener('DOMContentLoaded', function() {
+		document.querySelector('#crt_btn').onclick = create_ingr_set;
+	});
+
+	function remove_last_ingr_set() {		
+		if (form_counter > 1) {
+
+			// Decrement counter
+			form_counter--
+		
+			// Eye on counter
+			//var hel = document.getElementById("counter_id");
+			//hel.textContent = form_counter;
+
+			// Select last set
+			var last_set = document.getElementById("ingr_form_all_ingrs").lastElementChild;
+			
+			// Remove element
+			last_set.parentNode.removeChild(last_set);
+
+		} else {
+
+			// Must have at least 1 ingredient
+			alert("Base recipe must have at least one ingredient!");
+		}
+	}
+	
+	function create_ingr_set() {		
+		if (form_counter < 20 ) {
+
+			// Increment counter
+			form_counter++
+			
+			// Eye on counter
+			//hel = document.getElementById("counter_id");
+			//hel.textContent = form_counter;
+
+			// Clone last set
+			new_set = document.getElementById("ingr_form_all_ingrs").lastElementChild.cloneNode(true);
+			
+			// Update IDs
+			new_set.id = "ingr_set_" + form_counter;
+			new_set.getElementsByTagName('select')[0].id = "id_brec_ingr_name_" + form_counter;
+			new_set.getElementsByTagName('input')[0].id = "id_brec_ingr_val_" + form_counter;
+			new_set.getElementsByTagName('select')[1].id = "id_brec_ingr_unit_" + form_counter;
+
+			// Delete labels if counter == 2
+			if (form_counter == 2 ) {
+				new_set.getElementsByTagName('label')[0].parentNode.removeChild(new_set.getElementsByTagName('label')[0]);
+				new_set.getElementsByTagName('label')[0].parentNode.removeChild(new_set.getElementsByTagName('label')[0]);
+				new_set.getElementsByTagName('label')[0].parentNode.removeChild(new_set.getElementsByTagName('label')[0]);
+			}
+
+			// Reset amount input value
+			amountInput = new_set.getElementsByTagName('input')[0];
+			amountInput.value = ''
+			
+			// Add to DOM
+			document.querySelector('#ingr_form_all_ingrs').appendChild(new_set);
+
+		} else {
+
+			// Max of 20 ingredients
+			alert("Base recipe max ingredient number is 20!");
+		}
+	}
+
+
+
+
+
+	// function crt_form_element() {
+	// 	form_counter++
+	// 	var new_elm = document.getElementById("ingr_set_0").cloneNode(true);
+	// 	new_elm.id = "name_field_" + form_counter;
+	// 	document.querySelector('#ingr_form_all_ingrs').appendChild(new_elm);
+	// }
+
+
+	
+
+	// document.addEventListener('DOMContentLoaded', function() {
+	// 	var x = document.getElementById("ingr_set_3");
+	// 	x.style.display = "none";
+	// });
+
+
+
+
+
+	// Example starter JavaScript for disabling form submissions if there are invalid fields
+	(function() {
+	  'use strict';
+	  window.addEventListener('load', function() {
+	    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+	    var forms = document.getElementsByClassName('needs-validation');
+	    // Loop over them and prevent submission
+	    var validation = Array.prototype.filter.call(forms, function(form) {
+	      form.addEventListener('submit', function(event) {
+	        if (form.checkValidity() === false) {
+	          event.preventDefault();
+	          event.stopPropagation();
+	        }
+	        form.classList.add('was-validated');
+	      }, false);
+	    });
+	  }, false);
+	})();
+
+	
+</script>
+
+
+{% endblock content %}

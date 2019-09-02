@@ -21,18 +21,18 @@ class Ingredient(models.Model):
 
 class BaseRecipe(models.Model):
 	name = models.CharField(max_length=64, unique=True)
-	brec_yield_unit = models.ForeignKey('IngredientUnit', on_delete=models.PROTECT, related_name="baseRecipes")
+	brec_yield_unit = models.ForeignKey(IngredientUnit, on_delete=models.PROTECT, related_name="baseRecipes")
 	brec_yield_value = models.FloatField()
 	brec_ingredients = models.ManyToManyField(Ingredient, through='BaseRec_Ingredient_Amount', related_name='baseRecipes')
 	procedure = models.TextField()
 	def __str__(self):
-		return f"{self.name}"
+		return f"{self.name.capitalize()}"
 
 
 class BaseRec_Ingredient_Amount(models.Model):
 	baseRecipe = models.ForeignKey(BaseRecipe, on_delete=models.PROTECT, related_name='ingredient_amount')
 	ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT, related_name='ingredient_amount')
-	#ingredientUnit = models.ForeignKey('self'.ingredient.unit, on_delete=models.PROTECT)
+	ingredientUnit = models.ForeignKey(IngredientUnit, on_delete=models.PROTECT)
 	amount = models.FloatField()
 	def __str__(self):
 		return f"{self.baseRecipe.name}, {self.ingredient.name}, {self.amount}"

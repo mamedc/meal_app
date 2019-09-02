@@ -44,13 +44,15 @@
                 <!-- Link Ingredients -->
                 {% if current_url == 'manage_ingredient' %}
                     <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'manage_ingredient' %}">Ingredients
+                        <a class="nav-link" href=#>Ingredients
+                            <!--"{% url 'manage_ingredient' %}"-->
                             <!--span class="sr-only">(current)</span-->
                         </a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'manage_ingredient' %}">Ingredients      
+                        <a class="nav-link" href=#>Ingredients      
+                        <!-- url 'manage_ingredient' -->
                         </a>
                     </li>
                 {% endif %}
@@ -58,13 +60,15 @@
                 <!-- Link Recipes -->
                 {% if current_url == 'recipes-page' %}
                     <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'recipes-page' %}">Recipes
+                        <a class="nav-link" href=#>Recipes
+                            <!--"{% url 'recipes-page' %}"-->
                             <!--span class="sr-only">(current)</span-->
                         </a>
                     </li>
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'recipes-page' %}">Recipes      
+                        <a class="nav-link" href=#>Recipes      
+                        <!--" url 'recipes-page' "-->
                         </a>
                     </li>
                 {% endif %}
@@ -99,9 +103,13 @@
 
     <!-- Messages -->
     {% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-    {% endfor %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
     {% endif %}
 
     

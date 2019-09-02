@@ -1,3 +1,4 @@
+// Datatable
 $(document).ready(function(){
     $('#data_table').DataTable({
         "paging": false, 
@@ -6,3 +7,4 @@ $(document).ready(function(){
         "language": {"search": "Filter records: "},
     });
 });
+

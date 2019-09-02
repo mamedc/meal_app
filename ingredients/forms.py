@@ -1,5 +1,55 @@
 from django import forms
-#from .models import Ingredient
+from .models import IngredientUnit, Ingredient
+from django.forms import formset_factory
+
+
+class IngredientForm(forms.Form):
+	name = forms.CharField(max_length=64)
+	wiki = forms.URLField(max_length=250)
+	unit = forms.ModelMultipleChoiceField(queryset=IngredientUnit.objects.all(), widget=forms.CheckboxSelectMultiple)
+	
+# class BaseRecipeAddIngrForm(forms.Form):
+# 	brec_ingredient_name = forms.ModelChoiceField(queryset=Ingredient.objects.all().order_by('name'), label='brec_ingredients', empty_label='')
+# 	brec_ingredient_value = forms.FloatField()
+# 	brec_ingredient_unit = forms.ModelChoiceField(queryset=IngredientUnit.objects.all(), empty_label='')
+
+# BaseRecipeAddIngrFormSet = formset_factory(BaseRecipeAddIngrForm, extra=2)
+
+class BaseRecipeForm(forms.Form):
+	name = forms.CharField(label='Base recipe name', max_length=64)
+	brec_yield_value = forms.FloatField()
+	brec_yield_unit = forms.ModelChoiceField(queryset=IngredientUnit.objects.all(), empty_label='')
+	procedure = forms.CharField(widget=forms.Textarea)
+	
+	# Create sets of ingredient/value/unit fields
+	def __init__(self, *args, **kwargs):
+		super(BaseRecipeForm, self).__init__(*args, **kwargs)
+		self.ingr_sets_counter = 0
+		max_ingrs = 5
+		for i in range(1, max_ingrs+1):
+			self.ingr_sets_counter += 1
+			self.fields['brec_ingr_name_%s' % i] = forms.ModelChoiceField(queryset=Ingredient.objects.all().order_by('name'), label='brec_ingredients', empty_label='')
+			self.fields['brec_ingr_val_%s' % i] = forms.FloatField()
+			self.fields['brec_ingr_unit_%s' % i] = forms.ModelChoiceField(queryset=IngredientUnit.objects.all(), empty_label='')
+	
+
+
+
+# class IngredientUnitForm(forms.ModelForm):
+#     class Meta:
+#         model = IngredientUnit
+#         fields = ['unitName', 'unitSymbol']
+
+
+# class IngredientForm(forms.ModelForm):
+#     class Meta:
+#         model = Ingredient
+#         fields = ['name', 'unit', 'wiki']
+
+
+
+
+
 
 #class RecipeForm(forms.Form):
 #	name = forms.CharField()

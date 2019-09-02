@@ -1,0 +1,32 @@
+{% extends "ingredients/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div id="div_1">
+
+	<h4>Add Ingredient</h4><br>
+
+	<form method="POST">
+  		{% csrf_token %}
+	    
+	    <div>
+	    	{% for field in form %}
+			    <div class="row">
+			      	<div class="col-md-2">    
+			        	{{ field.label_tag }}
+			        	{% if field.help_text %}
+			        		<sup>{{ field.help_text }}</sup>
+			        	{% endif %}
+			        	{{ field.errors }}
+			    	</div>
+			    	<div class="col-md-10 pull-left">{{ field }}</div>
+			    	<br>
+			    </div>
+			{% endfor %}
+	    </div>
+	    <br>
+		<input type="submit" value="Create ingredient">
+
+	</form>
+</div>	
+{% endblock content %}

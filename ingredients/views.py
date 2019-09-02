@@ -2,14 +2,75 @@ from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse, resolve
 from django.views.generic import ListView, DetailView, CreateView, FormView, TemplateView
+from django.contrib import messages
+
 from .models import (
-    IngredientUnit
-    #Ingredient, 
-    #Recipe, 
-    #IngrQuantity, 
+    IngredientUnit, 
+    Ingredient, 
+    BaseRecipe, 
+    BaseRec_Ingredient_Amount, 
 )
 
-#from .forms import RecipeForm
+from .forms import IngredientForm, BaseRecipeForm
+
+
+def addIngredient(request):
+    # POST, generate form with data from the request
+	if request.method == "POST":
+		form = IngredientForm(request.POST)
+        
+		if form.is_valid():
+			ingrName = form.cleaned_data['name'].lower()
+			wikiUrl = form.cleaned_data['wiki']
+			unitObj = form.cleaned_data['unit']
+
+			# If ingrName already exists, return to POST form with flash msg
+			if ingrName in Ingredient.objects.values_list('name', flat=True):
+				messages.warning(request, 'Ingredient *{}* already exists!'.format(ingrName))
+				return render(request, 'ingredients/addIngredient.html', {'form': form})
+
+			# As it is a ManyToMany, 1st we save Ingredient than add the relationships
+			ingrObj = Ingredient(name=ingrName, wiki=wikiUrl)
+			ingrObj.save()
+			for obj in unitObj:
+				ingrObj.unit.add(obj)
+
+        	# Success msg
+			messages.success(request, 'Ingredient *{}* was created!'.format(ingrName))
+
+			# Redirect to a new url
+			return HttpResponseRedirect('/add_ingredient/')
+    
+	# GET, generate blank form
+	else:
+		form = IngredientForm()
+
+	return render(request, 'ingredients/addIngredient.html', {'form': form})
+
+
+
+def addBaseRecipe(request):
+    # POST, generate form with data from the request
+	if request.method == "POST":
+
+		form = BaseRecipeForm(request.POST)
+		
+	 	
+		if form.is_valid():
+
+			#messages.warning(request, '{}'.format(form))
+
+			return HttpResponseRedirect('/add_baserecipe/')
+
+	form = BaseRecipeForm()
+	
+	
+	#messages.warning(request, '{}'.format(form))
+
+	return render(request, 'ingredients/addBaseRecipe.html', {'form': form, 'ingrRange': range(form.ingr_sets_counter)})
+
+
+
 
 
 # def ingredients(request):
