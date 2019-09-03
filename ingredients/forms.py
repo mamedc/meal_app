@@ -16,16 +16,16 @@ class IngredientForm(forms.Form):
 # BaseRecipeAddIngrFormSet = formset_factory(BaseRecipeAddIngrForm, extra=2)
 
 class BaseRecipeForm(forms.Form):
-	#name = forms.CharField(label='Base recipe name', max_length=64)
-	#brec_yield_value = forms.FloatField()
-	#brec_yield_unit = forms.ModelChoiceField(queryset=IngredientUnit.objects.all(), empty_label='')
-	#procedure = forms.CharField(widget=forms.Textarea)
+	name = forms.CharField(label='Base recipe name', max_length=64)
+	brec_yield_value = forms.FloatField()
+	brec_yield_unit = forms.ModelChoiceField(queryset=IngredientUnit.objects.all(), empty_label='')
+	procedure = forms.CharField(widget=forms.Textarea)
 	
 	# Create sets of ingredient/value/unit fields
 	def __init__(self, *args, **kwargs):
 		super(BaseRecipeForm, self).__init__(*args, **kwargs)
 		self.ingr_sets_counter = 0
-		max_ingrs = 3
+		max_ingrs = 20
 		for i in range(1, max_ingrs+1):
 			self.ingr_sets_counter += 1
 			self.fields['brec_ingr_name_%s' % i] = forms.ModelChoiceField(queryset=Ingredient.objects.all().order_by('name'), label='brec_ingredients', empty_label='')

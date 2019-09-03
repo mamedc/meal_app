@@ -11,23 +11,17 @@
 {{ form.non_field_errors }}
 {{ form.field_errors }}
 
-  
-<!--table>
-    {{ form.as_table }}
-</table-->
-
-
 <!-- Base recipe name --------------------------------------------------------->
-<!--div class="form-group">
+<div class="form-group">
 	{{ form.name.errors }}
 	<label for="id_name">Name</label>
 	<input name="name" id="id_name" type="text" class="form-control" aria-describedby="nameHelp" placeholder="Ex. Pesto" autocomplete="off" required>
 	<div class="invalid-feedback">Required field.</div>
-</div-->
+</div>
 
 
 <!-- Base recipe yield and unit ----------------------------------------------->
-<!--div class="form-row">
+<div class="form-row">
 	<div class="form-group col">
 		{{ form.brec_yield_value.errors }}
 		<label for="id_brec_yield_value">Yield</label>
@@ -45,20 +39,18 @@
 	    </select>
 		<div class="invalid-feedback">Required field.</div>
 	</div>
-</div-->
+</div>
 
-<br>
-<!--h5>
+<!-- Ingredients add/remnove buttons ------------------------------------------>
+<br><h5>
 	Ingredients
 	<button type="button" class="btn btn-success btn-sm" id="crt_btn"><i class="fas fa-plus"></i></button>
 	<button type="button" class="btn btn-danger  btn-sm" id="del_btn"><i class="fas fa-minus"></i></button>
-</h5-->
-<br>
+</h5><br>
 <!--h3 id='counter_id'>4</h3-->
 
 <!-- Form sets of ingredient/amount/unit -------------------------------------->
 <div id="ingr_form_all_ingrs" class="form-group">	
-	<!-- 1 -->
 	<div id="ingr_set_1" class="form-row">
 		
 		<div class="form-group col">
@@ -90,75 +82,15 @@
 			<div class="invalid-feedback">Required field.</div>
 		</div>
 	</div>
-
-	<!-- 2 -->
-	<!--div id="ingr_set_2" class="form-row">
-		
-		<div class="form-group col">
-  			{{ form.brec_ingr_name_2.errors }}
-				<select class="form-control" id="id_brec_ingr_name_2" required>
-					{% for value, text in form.brec_ingr_name_2.field.choices %}
-						<option>{{ text }}</option>
-					{% endfor %}
-			    </select>
-			<div class="invalid-feedback">Required field.</div>
-		</div>
-		
-		<div class="form-group col-auto">
-  			{{ form.brec_ingr_val_2.errors }}
-			<input type="number" class="form-control" id="id_brec_ingr_val_2" required>
-			<div class="invalid-feedback">Required field.</div>
-		</div>
-		
-		<div class="form-group col-auto">
-  			{{ form.brec_ingr_unit_2.errors }}
-			    <select class="form-control" id="id_brec_ingr_unit_2" required>
-					{% for value, text in form.brec_ingr_unit_2.field.choices %}
-						<option>{{ text }}</option>
-					{% endfor %}
-			    </select>
-			<div class="invalid-feedback">Required field.</div>
-		</div>
-	</div-->
-
-	<!-- 3 -->
-	<!--div id="ingr_set_3" class="form-row">
-		
-		<div class="form-group col">
-  			{{ form.brec_ingr_name_3.errors }}
-				<select class="form-control" id="id_brec_ingr_name_3" required>
-					{% for value, text in form.brec_ingr_name_3.field.choices %}
-						<option>{{ text }}</option>
-					{% endfor %}
-			    </select>
-			<div class="invalid-feedback">Required field.</div>
-		</div>
-		
-		<div class="form-group col-auto">
-  			{{ form.brec_ingr_val_3.errors }}
-			<input type="number" class="form-control" id="id_brec_ingr_val_3" required>
-			<div class="invalid-feedback">Required field.</div>
-		</div>
-		
-		<div class="form-group col-auto">
-  			{{ form.brec_ingr_unit_3.errors }}
-			    <select class="form-control" id="id_brec_ingr_unit_3" required>
-					{% for value, text in form.brec_ingr_unit_3.field.choices %}
-						<option>{{ text }}</option>
-					{% endfor %}
-			    </select>
-			<div class="invalid-feedback">Required field.</div>
-		</div>
-	</div-->
 </div>
 
 
-<!-- Procedures -------------------------------------->
-<!--div class="form-group">
+<!-- Procedures --------------------------------------------------------------->
+<div class="form-group">
 	<label for="id_procedure">Base recipe procedure</label>
     <textarea name="procedure" id="id_procedure" class="form-control" rows="6" required></textarea>
     <div class="invalid-feedback">Please provide a valid city.</div>
-</div-->
+</div>
 
 
 <br>
@@ -180,7 +112,7 @@
 	};
 
 
-	let form_counter = 4
+	let form_counter = 1
 
 	document.addEventListener('DOMContentLoaded', function() {
 		document.querySelector('#del_btn').onclick = remove_last_ingr_set;
@@ -226,6 +158,11 @@
 			// Clone last set
 			new_set = document.getElementById("ingr_form_all_ingrs").lastElementChild.cloneNode(true);
 			
+			// Update Names
+			new_set.getElementsByTagName('select')[0].name = "brec_ingr_name_" + form_counter;
+			new_set.getElementsByTagName('input')[0].name = "brec_ingr_val_" + form_counter;
+			new_set.getElementsByTagName('select')[1].name = "brec_ingr_unit_" + form_counter;
+
 			// Update IDs
 			new_set.id = "ingr_set_" + form_counter;
 			new_set.getElementsByTagName('select')[0].id = "id_brec_ingr_name_" + form_counter;

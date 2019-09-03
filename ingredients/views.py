@@ -53,28 +53,41 @@ def addBaseRecipe(request):
     # POST, generate form with data from the request
 	if request.method == "POST":
 		form = BaseRecipeForm(request.POST)
-
-		#assert False, '------ Valid! ------\n{}'.format(form)
-
-		if form.is_valid():
-			assert False, '------ Valid! ------\n{}'.format(form.cleaned_data)
-
-			brecName = form.cleaned_data['name'].lower()
-			brec_yield_value = form.cleaned_data['brec_yield_value']
-			brec_yield_unit = form.cleaned_data['brec_yield_unit']
-			procedure = form.cleaned_data['procedure']
-
-			# Success msg
-			messages.success(request, 'Ingredient *{}* was created!'.format(brecName))
-
-			return HttpResponseRedirect('/add_baserecipe/')
-
-		else:
-			assert False, 'Error!\n\n{}\n\n{}'.format(form.errors, form.cleaned_data)
-			#messages.success(request, '{}'.format(form))
+		form.is_valid() # Generates 'cleaned_data' and 'errors' dict
+		
+		# If brecName already exists, return to POST form with flash msg
+		if form.cleaned_data['name'] in BaseRecipe.objects.values_list('name', flat=True):
+			messages.warning(request, 'Base recipe *{}* already exists!'.format(form.cleaned_data['name']))
 			return render(request, 'ingredients/addBaseRecipe.html', {'form': form})
 
-	form = BaseRecipeForm()
+		# As it is a ManyToMany, 1st we save Base Recipe, than add the relationships
+		brecObj = BaseRecipe(
+			name = form.cleaned_data['name'], 
+			brec_yield_unit = form.cleaned_data['brec_yield_unit'], 
+			brec_yield_value = form.cleaned_data['brec_yield_value'], 
+			procedure = form.cleaned_data['procedure'])
+		brecObj.save()
+
+		n_ingrs = min([int(x) for x in set([x.split('_')[-1] for x in form.errors.keys()])])-1
+		for i in range(1, n_ingrs+1):
+			ingrAmountObj = BaseRec_Ingredient_Amount(
+				baseRecipe = brecObj, 
+				ingredient = form.cleaned_data['brec_ingr_name_' + str(i)],
+				ingredientUnit = form.cleaned_data['brec_ingr_unit_' + str(i)],
+				amount = form.cleaned_data['brec_ingr_val_' + str(i)])
+			ingrAmountObj.save()
+			#brecObj.brec_ingredients.add(ingrAmountObj)
+		
+		# Success msg
+		messages.success(request, 'Base recipe *{}* was created!'.format(form.cleaned_data['name']))
+
+		# Redirect to a new url
+		return HttpResponseRedirect('/add_baserecipe/')
+
+	# GET, generate blank form
+	else:
+		form = BaseRecipeForm()
+	
 	return render(request, 'ingredients/addBaseRecipe.html', {'form': form})
 
 
