@@ -9,44 +9,50 @@
 <form action="/add_baserecipe/" method="POST" class="needs-validation" novalidate>
 {% csrf_token %}
 {{ form.non_field_errors }}
+{{ form.field_errors }}
 
   
+<!--table>
+    {{ form.as_table }}
+</table-->
+
+
 <!-- Base recipe name --------------------------------------------------------->
-<div class="form-group">
+<!--div class="form-group">
 	{{ form.name.errors }}
 	<label for="id_name">Name</label>
-	<input type="text" class="form-control" id="id_name" aria-describedby="nameHelp" placeholder="Ex. Pesto" autocomplete="off" required>
+	<input name="name" id="id_name" type="text" class="form-control" aria-describedby="nameHelp" placeholder="Ex. Pesto" autocomplete="off" required>
 	<div class="invalid-feedback">Required field.</div>
-</div>
+</div-->
 
 
 <!-- Base recipe yield and unit ----------------------------------------------->
-<div class="form-row">
+<!--div class="form-row">
 	<div class="form-group col">
 		{{ form.brec_yield_value.errors }}
 		<label for="id_brec_yield_value">Yield</label>
-		<input type="number" class="form-control" id="id_brec_yield_value" placeholder="Ex. 1.5" required>
+		<input name="brec_yield_value" id="id_brec_yield_value" type="number" step="any" class="form-control" placeholder="Ex. 1.5" required>
 		<div class="invalid-feedback">Required field.</div>
 	</div>
 
 	<div class="form-group col-auto">
 		{{ form.brec_yield_unit.errors }}
 		<label for="id_brec_yield_unit">Unit</label>
-	    <select class="form-control" id="id_brec_yield_unit" required>
+	    <select name="brec_yield_unit" id="id_brec_yield_unit" class="form-control" required>
 			{% for value, text in form.brec_yield_unit.field.choices %}
-				<option>{{ text }}</option>
+				<option value="{{ value }}">{{ text }}</option>
 			{% endfor %}
 	    </select>
 		<div class="invalid-feedback">Required field.</div>
 	</div>
-</div>
+</div-->
 
 <br>
-<h5>
+<!--h5>
 	Ingredients
 	<button type="button" class="btn btn-success btn-sm" id="crt_btn"><i class="fas fa-plus"></i></button>
 	<button type="button" class="btn btn-danger  btn-sm" id="del_btn"><i class="fas fa-minus"></i></button>
-</h5>
+</h5-->
 <br>
 <!--h3 id='counter_id'>4</h3-->
 
@@ -54,31 +60,31 @@
 <div id="ingr_form_all_ingrs" class="form-group">	
 	<!-- 1 -->
 	<div id="ingr_set_1" class="form-row">
-		<!-- Name -->
+		
 		<div class="form-group col">
   			{{ form.brec_ingr_name_1.errors }}
   			<label for="id_brec_ingr_name_1">Ingredient</label>
-				<select class="form-control" id="id_brec_ingr_name_1" required>
+				<select name="brec_ingr_name_1" id="id_brec_ingr_name_1" class="form-control" required>
 					{% for value, text in form.brec_ingr_name_1.field.choices %}
-						<option>{{ text }}</option>
+						<option value="{{ value }}">{{ text }}</option>
 					{% endfor %}
 			    </select>
 			<div class="invalid-feedback">Required field.</div>
 		</div>
-		<!-- Amount -->
+		
 		<div class="form-group col-auto">
   			{{ form.brec_ingr_val_1.errors }}
   			<label for="id_brec_ingr_val_1">Amount</label>
-			<input type="number" class="form-control" id="id_brec_ingr_val_1" required>
+			<input name="brec_ingr_val_1" id="id_brec_ingr_val_1" type="number" step="any" class="form-control" required>
 			<div class="invalid-feedback">Required field.</div>
 		</div>
-		<!-- Unit -->
+		
 		<div class="form-group col-auto">
   			{{ form.brec_ingr_unit_1.errors }}
   			<label for="id_brec_ingr_unit_1">Unit</label>
-			    <select class="form-control" id="id_brec_ingr_unit_1" required>
+			    <select name="brec_ingr_unit_1" id="id_brec_ingr_unit_1" class="form-control" required>
 					{% for value, text in form.brec_ingr_unit_1.field.choices %}
-						<option>{{ text }}</option>
+						<option value="{{ value }}">{{ text }}</option>
 					{% endfor %}
 			    </select>
 			<div class="invalid-feedback">Required field.</div>
@@ -86,8 +92,8 @@
 	</div>
 
 	<!-- 2 -->
-	<div id="ingr_set_2" class="form-row">
-		<!-- Name -->
+	<!--div id="ingr_set_2" class="form-row">
+		
 		<div class="form-group col">
   			{{ form.brec_ingr_name_2.errors }}
 				<select class="form-control" id="id_brec_ingr_name_2" required>
@@ -97,13 +103,13 @@
 			    </select>
 			<div class="invalid-feedback">Required field.</div>
 		</div>
-		<!-- Amount -->
+		
 		<div class="form-group col-auto">
   			{{ form.brec_ingr_val_2.errors }}
 			<input type="number" class="form-control" id="id_brec_ingr_val_2" required>
 			<div class="invalid-feedback">Required field.</div>
 		</div>
-		<!-- Unit -->
+		
 		<div class="form-group col-auto">
   			{{ form.brec_ingr_unit_2.errors }}
 			    <select class="form-control" id="id_brec_ingr_unit_2" required>
@@ -113,11 +119,11 @@
 			    </select>
 			<div class="invalid-feedback">Required field.</div>
 		</div>
-	</div>
+	</div-->
 
 	<!-- 3 -->
-	<div id="ingr_set_3" class="form-row">
-		<!-- Name -->
+	<!--div id="ingr_set_3" class="form-row">
+		
 		<div class="form-group col">
   			{{ form.brec_ingr_name_3.errors }}
 				<select class="form-control" id="id_brec_ingr_name_3" required>
@@ -127,13 +133,13 @@
 			    </select>
 			<div class="invalid-feedback">Required field.</div>
 		</div>
-		<!-- Amount -->
+		
 		<div class="form-group col-auto">
   			{{ form.brec_ingr_val_3.errors }}
 			<input type="number" class="form-control" id="id_brec_ingr_val_3" required>
 			<div class="invalid-feedback">Required field.</div>
 		</div>
-		<!-- Unit -->
+		
 		<div class="form-group col-auto">
   			{{ form.brec_ingr_unit_3.errors }}
 			    <select class="form-control" id="id_brec_ingr_unit_3" required>
@@ -143,47 +149,21 @@
 			    </select>
 			<div class="invalid-feedback">Required field.</div>
 		</div>
-	</div>
-
-	<!-- 4 -->
-	<div id="ingr_set_4" class="form-row">
-		<!-- Name -->
-		<div class="form-group col">
-			<select class="form-control" id="id_brec_ingr_name_4" required>
-				{% for value, text in form.brec_ingr_name_4.field.choices %}
-					<option>{{ text }}</option>
-				{% endfor %}
-		    </select>
-			<div class="invalid-feedback">Required field.</div>
-		</div>
-		<!-- Amount -->
-		<div class="form-group col-auto">
-  			<input type="number" class="form-control" id="id_brec_ingr_val_4" required>
-			<div class="invalid-feedback">Required field.</div>
-		</div>
-		<!-- Unit -->
-		<div class="form-group col-auto">
-		    <select class="form-control" id="id_brec_ingr_unit_4" required>
-				{% for value, text in form.brec_ingr_unit_4.field.choices %}
-					<option>{{ text }}</option>
-				{% endfor %}
-		    </select>
-			<div class="invalid-feedback">Required field.</div>
-		</div>
-	</div>
+	</div-->
 </div>
+
 
 <!-- Procedures -------------------------------------->
-<div class="form-group">
+<!--div class="form-group">
 	<label for="id_procedure">Base recipe procedure</label>
-    <textarea class="form-control" id="id_procedure" rows="6" required></textarea>
+    <textarea name="procedure" id="id_procedure" class="form-control" rows="6" required></textarea>
     <div class="invalid-feedback">Please provide a valid city.</div>
-</div>
+</div-->
 
 
 <br>
 <div>
-	<button type="submit" class="btn btn-secondary btn-lg btn-block">Add Base Recipe</button>
+	<input type="submit" class="btn btn-secondary btn-lg btn-block" value="Add Base Recipe">
 </div>
 
 </form>

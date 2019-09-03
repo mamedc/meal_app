@@ -52,22 +52,30 @@ def addIngredient(request):
 def addBaseRecipe(request):
     # POST, generate form with data from the request
 	if request.method == "POST":
-
 		form = BaseRecipeForm(request.POST)
-		
-	 	
-		if form.is_valid():
 
-			#messages.warning(request, '{}'.format(form))
+		#assert False, '------ Valid! ------\n{}'.format(form)
+
+		if form.is_valid():
+			assert False, '------ Valid! ------\n{}'.format(form.cleaned_data)
+
+			brecName = form.cleaned_data['name'].lower()
+			brec_yield_value = form.cleaned_data['brec_yield_value']
+			brec_yield_unit = form.cleaned_data['brec_yield_unit']
+			procedure = form.cleaned_data['procedure']
+
+			# Success msg
+			messages.success(request, 'Ingredient *{}* was created!'.format(brecName))
 
 			return HttpResponseRedirect('/add_baserecipe/')
 
-	form = BaseRecipeForm()
-	
-	
-	#messages.warning(request, '{}'.format(form))
+		else:
+			assert False, 'Error!\n\n{}\n\n{}'.format(form.errors, form.cleaned_data)
+			#messages.success(request, '{}'.format(form))
+			return render(request, 'ingredients/addBaseRecipe.html', {'form': form})
 
-	return render(request, 'ingredients/addBaseRecipe.html', {'form': form, 'ingrRange': range(form.ingr_sets_counter)})
+	form = BaseRecipeForm()
+	return render(request, 'ingredients/addBaseRecipe.html', {'form': form})
 
 
 
