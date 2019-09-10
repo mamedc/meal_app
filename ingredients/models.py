@@ -30,40 +30,38 @@ class BaseRecipe(models.Model):
 
 
 class BaseRec_Ingredient_Amount(models.Model):
-	baseRecipe = models.ForeignKey(BaseRecipe, on_delete=models.PROTECT, related_name='ingredient_amount')
-	ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT, related_name='ingredient_amount')
+	baseRecipe = models.ForeignKey(BaseRecipe, on_delete=models.PROTECT, related_name='brec_ingredient_amount')
+	ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT, related_name='brec_ingredient_amount')
 	ingredientUnit = models.ForeignKey(IngredientUnit, on_delete=models.PROTECT)
 	amount = models.FloatField()
 	def __str__(self):
 		return f"{self.baseRecipe.name}, {self.ingredient.name}, {self.amount}"
 
 
-
-# class Recipe(models.Model):
-# 	name = models.CharField(max_length=64)
-# 	recipe_yield = models.IntegerField()
-# 	recipeIngredients = models.ManyToManyField(Ingredient, through='IngrQuantity', related_name='rec_ingredients')
-# 	recipeBaseRecipes = models.ManyToManyField(
-# 		BaseRecipe, through='BaseRecipeQuantity', related_name='recBaseRec')
-# 	instructions = models.TextField(default='')
-# 	def __str__(self):
-# 		return f"{self.name}"
+class Recipe(models.Model):
+	name = models.CharField(max_length=64, unique=True)
+	recipe_yield = models.IntegerField()
+	recipeIngredients = models.ManyToManyField(Ingredient, through='Rec_Ingredient_Amount', related_name='rec_ingredients')
+	recipeBaseRecipes = models.ManyToManyField(BaseRecipe, through='Rec_bRec_Amount', related_name='recBaseRec')
+	procedure = models.TextField()
+	def __str__(self):
+		return f"{self.name.capitalize()}"
 
 
-# class IngrQuantity(models.Model):
-# 	recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-# 	ingr = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-# 	quantity = models.FloatField()
-# 	def __str__(self):
-# 		return f"{self.recipe}, {self.ingr}, {self.quantity}"
+class Rec_Ingredient_Amount(models.Model):
+	recipe = models.ForeignKey(Recipe, on_delete=models.PROTECT, related_name='rec_ingredient_amount')
+	ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT, related_name='rec_ingredient_amount')
+	ingredientUnit = models.ForeignKey(IngredientUnit, on_delete=models.PROTECT)
+	amount = models.FloatField()
+	def __str__(self):
+		return f"{self.recipe.name}, {self.ingredient.name}, {self.amount}"
 
 
-# class BaseRecipeQuantity(models.Model):
-# 	recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-# 	baserecipe = models.ForeignKey(BaseRecipe, on_delete=models.CASCADE)
-# 	quantity = models.FloatField()
-# 	def __str__(self):
-# 		return f"{self.recipe}, {self.baserecipe}, {self.quantity}"
-
+class Rec_bRec_Amount(models.Model):
+	recipe = models.ForeignKey(Recipe, on_delete=models.PROTECT, related_name='brec_amount')
+	brec = models.ForeignKey(BaseRecipe, on_delete=models.PROTECT, related_name='brec_amount')
+	amount = models.FloatField()
+	def __str__(self):
+		return f"{self.recipe.name}, {self.brec.name}, {self.amount}"
 
 

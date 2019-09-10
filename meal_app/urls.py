@@ -17,6 +17,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('add_ingredient/', ingrViews.addIngredient, name='addIngredient'),
     path('add_baserecipe/', ingrViews.addBaseRecipe, name='addBaseRecipe'),
+    path('add_recipe/', ingrViews.addRecipe, name='addRecipe'),
 
     #path('', include('blog.urls')),
     

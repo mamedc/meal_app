@@ -1,0 +1,375 @@
+{% extends "ingredients/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div id="div_1">
+
+<h5>Add Recipe</h5><br>
+
+<form action="/add_recipe/" method="POST" class="needs-validation" novalidate>
+{% csrf_token %}
+{{ form.non_field_errors }}
+{{ form.field_errors }}
+
+<!-- Base recipe name --------------------------------------------------------->
+<div class="form-group">
+	{{ form.name.errors }}
+	<label for="id_name">Name</label>
+	<input name="name" id="id_name" type="text" class="form-control" aria-describedby="nameHelp" placeholder="Ex. Pesto" autocomplete="off" required>
+	<div class="invalid-feedback">Required field.</div>
+</div>
+
+
+<!-- Recipe yield and unit ----------------------------------------------->
+<div class="form-group">
+	{{ form.recipe_yield.errors }}
+	<label for="id_recipe_yield">Yield</label>
+	<input name="recipe_yield" id="id_recipe_yield" type="number" step="any" class="form-control" placeholder="Ex. 4" required>
+	<div class="invalid-feedback">Required field.</div>
+</div>
+
+
+
+
+<!-- Ingredients add/remnove buttons ------------------------------------------>
+<br>
+<div>
+	<h5>
+		<span id="ingr_counter">Ingredients (1)</span>
+		<span style="float: right;">
+			<button type="button" class="btn btn-success btn-sm" id="crt_ingr_btn"><i class="fas fa-plus"></i></button>
+			<button type="button" class="btn btn-danger  btn-sm" id="del_ingr_btn" disabled><i class="fas fa-minus"></i></button>
+		</span>
+	</h5>
+</div>
+<br>
+
+<!-- Form sets of ingredient/amount/unit -------------------------------------->
+<div id="ingr_form_all_ingrs" class="form-group">	
+	<div id="ingr_set_1" class="form-row">
+		
+		<div class="form-group col">
+  			{{ form.rec_ingr_name_1.errors }}
+  			<label for="id_rec_ingr_name_1">Ingredient</label>
+				<select name="rec_ingr_name_1" id="id_rec_ingr_name_1" class="form-control" required>
+					{% for value, text in form.rec_ingr_name_1.field.choices %}
+						<option value="{{ value }}">{{ text }}</option>
+					{% endfor %}
+			    </select>
+			<div class="invalid-feedback">Required field.</div>
+		</div>
+		
+		<div class="form-group col-auto">
+  			{{ form.rec_ingr_val_1.errors }}
+  			<label for="id_rec_ingr_val_1">Amount</label>
+			<input name="rec_ingr_val_1" id="id_rec_ingr_val_1" type="number" step="any" class="form-control" required>
+			<div class="invalid-feedback">Required field.</div>
+		</div>
+		
+		<div class="form-group col-auto">
+  			{{ form.rec_ingr_unit_1.errors }}
+  			<label for="id_rec_ingr_unit_1">Unit</label>
+			    <select name="rec_ingr_unit_1" id="id_rec_ingr_unit_1" class="form-control" required>
+					{% for value, text in form.rec_ingr_unit_1.field.choices %}
+						<option value="{{ value }}">{{ text }}</option>
+					{% endfor %}
+			    </select>
+			<div class="invalid-feedback">Required field.</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<!-- Base Recipes add/remnove buttons ------------------------------------------>
+<br>
+<div>
+	<h5>
+		<span id="brec_counter">Base recipes (1)</span>
+		<span style="float: right;">
+			<button type="button" class="btn btn-success btn-sm" id="crt_brec_btn"><i class="fas fa-plus"></i></button>
+			<button type="button" class="btn btn-danger  btn-sm" id="del_brec_btn"><i class="fas fa-minus"></i></button>
+		</span>
+	</h5>
+</div>
+<br>
+
+
+
+
+
+
+
+<!-- Form sets of ingredient/amount/unit -------------------------------------->
+<div id="brec_form_all_ingrs" class="form-group">	
+	<div id="brec_set_1" class="form-row">
+		
+		<div class="form-group col">
+  			{{ form.rec_brec_name_1.errors }}
+  			<label for="id_rec_brec_name_1">Base recipe</label>
+				<select name="rec_brec_name_1" id="id_rec_brec_name_1" class="form-control" required>
+					{% for value, text in form.rec_brec_name_1.field.choices %}
+						<option value="{{ value }}">{{ text }}</option>
+					{% endfor %}
+			    </select>
+			<div class="invalid-feedback">Required field.</div>
+		</div>
+		
+		<div class="form-group col-auto">
+  			{{ form.rec_brec_val_1.errors }}
+  			<label for="id_rec_brec_val_1">Amount</label>
+			<input name="rec_brec_val_1" id="id_rec_brec_val_1" type="number" step="any" class="form-control" required>
+			<div class="invalid-feedback">Required field.</div>
+		</div>
+
+	</div>
+</div>
+
+
+
+
+
+<!-- Procedures --------------------------------------------------------------->
+<div class="form-group">
+	<label for="id_procedure">Base recipe procedure</label>
+    <textarea name="procedure" id="id_procedure" class="form-control" rows="6" required></textarea>
+    <div class="invalid-feedback">Please provide a valid city.</div>
+</div>
+
+
+<br>
+<div>
+	<input type="submit" class="btn btn-secondary btn-lg btn-block" value="Add Base Recipe">
+</div>
+
+</form>
+</div>	
+
+
+<script>
+	Object.size = function(obj) {
+	    var size = 0, key;
+	    for (key in obj) {
+	        if (obj.hasOwnProperty(key)) size++;
+    	}
+    	return size;
+	};
+
+
+	let form_ingr_counter = 1
+	let form_brec_counter = 1
+
+	document.addEventListener('DOMContentLoaded', function() {
+		document.querySelector('#del_ingr_btn').onclick = remove_last_ingr_set;
+	});
+
+	document.addEventListener('DOMContentLoaded', function() {
+		document.querySelector('#crt_ingr_btn').onclick = create_ingr_set;
+	});
+
+	document.addEventListener('DOMContentLoaded', function() {
+		document.querySelector('#del_brec_btn').onclick = remove_last_brec_set;
+	});
+
+	document.addEventListener('DOMContentLoaded', function() {
+		document.querySelector('#crt_brec_btn').onclick = create_brec_set;
+	});
+
+
+
+	function remove_last_ingr_set() {		
+		if (form_ingr_counter > 1) {
+
+			// Decrement counter
+			form_ingr_counter--
+		
+			// Eye on counter
+			hel = document.getElementById("ingr_counter");
+			hel.textContent = "Ingredients (" + form_ingr_counter + ")";
+
+			// Select last set
+			var last_set = document.getElementById("ingr_form_all_ingrs").lastElementChild;
+			
+			// Remove element
+			last_set.parentNode.removeChild(last_set);
+
+			if (form_ingr_counter == 1) {
+				// Disable delete button
+				document.getElementById("del_ingr_btn").disabled = true;
+			}
+
+		} else {
+
+			// Must have at least 1 ingredient
+			alert("Base recipe must have at least one ingredient!");
+		}
+	}
+	
+	function create_ingr_set() {		
+		if (form_ingr_counter < 20 ) {
+
+			// Increment counter
+			form_ingr_counter++
+			
+			// Eye on counter
+			hel = document.getElementById("ingr_counter");
+			hel.textContent = "Ingredients (" + form_ingr_counter + ")";
+
+			// Clone last set
+			new_set = document.getElementById("ingr_form_all_ingrs").lastElementChild.cloneNode(true);
+			
+			// Update Names
+			new_set.getElementsByTagName('select')[0].name = "rec_ingr_name_" + form_ingr_counter;
+			new_set.getElementsByTagName('input')[0].name = "rec_ingr_val_" + form_ingr_counter;
+			new_set.getElementsByTagName('select')[1].name = "rec_ingr_unit_" + form_ingr_counter;
+
+			// Update IDs
+			new_set.id = "ingr_set_" + form_ingr_counter;
+			new_set.getElementsByTagName('select')[0].id = "id_rec_ingr_name_" + form_ingr_counter;
+			new_set.getElementsByTagName('input')[0].id = "id_rec_ingr_val_" + form_ingr_counter;
+			new_set.getElementsByTagName('select')[1].id = "id_rec_ingr_unit_" + form_ingr_counter;
+
+			// Delete labels if counter == 2
+			if (form_ingr_counter == 2 ) {
+				new_set.getElementsByTagName('label')[0].parentNode.removeChild(new_set.getElementsByTagName('label')[0]);
+				new_set.getElementsByTagName('label')[0].parentNode.removeChild(new_set.getElementsByTagName('label')[0]);
+				new_set.getElementsByTagName('label')[0].parentNode.removeChild(new_set.getElementsByTagName('label')[0]);
+			}
+
+			// Reset amount input value
+			amountInput = new_set.getElementsByTagName('input')[0];
+			amountInput.value = ''
+			
+			// Add to DOM
+			document.querySelector('#ingr_form_all_ingrs').appendChild(new_set);
+
+
+			if (form_ingr_counter == 2) {
+				// Disable delete button
+				document.getElementById("del_ingr_btn").disabled = false;
+			}
+
+		} else {
+
+			// Max of 20 ingredients
+			alert("Base recipe max ingredient number is 20!");
+		}
+	}
+
+	var brec_default_node;
+
+	function remove_last_brec_set() {		
+		if (form_brec_counter > 1) {
+
+			// Decrement counter
+			form_brec_counter--
+		
+			// Eye on counter
+			hel = document.getElementById("brec_counter");
+			hel.textContent = "Base recipes (" + form_brec_counter + ")";
+
+			// Select last set
+			var last_set = document.getElementById("brec_form_all_ingrs").lastElementChild;
+			
+			// Remove element
+			last_set.parentNode.removeChild(last_set);
+
+		} else {
+
+			// Decrement counter
+			form_brec_counter--
+		
+			// Eye on counter
+			hel = document.getElementById("brec_counter");
+			hel.textContent = "No base recipes";
+
+			// Select last set
+			brec_default_node = document.getElementById("brec_form_all_ingrs").lastElementChild;
+			
+			// Remove element
+			brec_default_node.parentNode.removeChild(brec_default_node);
+
+			// Disable delete button
+			document.getElementById("del_brec_btn").disabled = true;
+		}
+	}
+	
+
+	function create_brec_set() {		
+		if (form_brec_counter < 20 ) {
+
+			// Increment counter
+			form_brec_counter++
+			
+			// Eye on counter
+			hel = document.getElementById("brec_counter");
+			hel.textContent = "Base recipes (" + form_brec_counter + ")";
+			
+			if (form_brec_counter == 1) {
+				// 'brec_default_node' was kept at function 'remove_last_brec_set'
+				// when 'form_brec_counter' was 1
+				new_set = brec_default_node
+
+				// Enable delete button
+				document.getElementById("del_brec_btn").disabled = false;
+			} else {
+				// Clone last set
+				new_set = document.getElementById("brec_form_all_ingrs").lastElementChild.cloneNode(true);
+			}
+
+			// Update Names
+			new_set.getElementsByTagName('select')[0].name = "rec_brec_name_" + form_brec_counter;
+			new_set.getElementsByTagName('input')[0].name = "rec_brec_val_" + form_brec_counter;
+			
+			// Update IDs
+			new_set.id = "brec_set_" + form_brec_counter;
+			new_set.getElementsByTagName('select')[0].id = "id_rec_brec_name_" + form_brec_counter;
+			new_set.getElementsByTagName('input')[0].id = "id_rec_brec_val_" + form_brec_counter;
+			
+			// Delete labels if counter == 2
+			if (form_brec_counter == 2 ) {
+				new_set.getElementsByTagName('label')[0].parentNode.removeChild(new_set.getElementsByTagName('label')[0]);
+				new_set.getElementsByTagName('label')[0].parentNode.removeChild(new_set.getElementsByTagName('label')[0]);
+			}
+
+			// Reset amount input value
+			amountInput = new_set.getElementsByTagName('input')[0];
+			amountInput.value = ''
+			
+			// Add to DOM
+			document.querySelector('#brec_form_all_ingrs').appendChild(new_set);
+
+		} else {
+
+			// Max of 20 ingredients
+			alert("Recipe max ingredient number is 20!");
+		}
+	}
+
+
+
+	// Example starter JavaScript for disabling form submissions if there are invalid fields
+	(function() {
+	  'use strict';
+	  window.addEventListener('load', function() {
+	    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+	    var forms = document.getElementsByClassName('needs-validation');
+	    // Loop over them and prevent submission
+	    var validation = Array.prototype.filter.call(forms, function(form) {
+	      form.addEventListener('submit', function(event) {
+	        if (form.checkValidity() === false) {
+	          event.preventDefault();
+	          event.stopPropagation();
+	        }
+	        form.classList.add('was-validated');
+	      }, false);
+	    });
+	  }, false);
+	})();
+
+	
+</script>
+
+
+{% endblock content %}

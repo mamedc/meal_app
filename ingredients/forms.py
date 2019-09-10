@@ -1,5 +1,14 @@
 from django import forms
-from .models import IngredientUnit, Ingredient
+from .models import (
+	IngredientUnit, 
+	Ingredient, 
+	BaseRecipe, 
+	BaseRec_Ingredient_Amount,
+	Recipe,
+	Rec_Ingredient_Amount,
+	Rec_bRec_Amount,
+)
+
 from django.forms import formset_factory
 
 
@@ -14,6 +23,8 @@ class IngredientForm(forms.Form):
 # 	brec_ingredient_unit = forms.ModelChoiceField(queryset=IngredientUnit.objects.all(), empty_label='')
 
 # BaseRecipeAddIngrFormSet = formset_factory(BaseRecipeAddIngrForm, extra=2)
+
+
 
 class BaseRecipeForm(forms.Form):
 	name = forms.CharField(label='Base recipe name', max_length=64)
@@ -33,6 +44,29 @@ class BaseRecipeForm(forms.Form):
 			self.fields['brec_ingr_unit_%s' % i] = forms.ModelChoiceField(queryset=IngredientUnit.objects.all(), empty_label='')
 	
 
+
+class RecipeForm(forms.Form):
+	name = forms.CharField(label='Recipe name', max_length=64)
+	recipe_yield = forms.IntegerField()
+	procedure = forms.CharField(widget=forms.Textarea)
+	
+	# Create sets of ingredient/value/unit fields
+	def __init__(self, *args, **kwargs):
+		super(RecipeForm, self).__init__(*args, **kwargs)
+		self.ingr_sets_counter = 0
+		self.brecs_sets_counter = 0
+		max_ingrs = 20
+		max_brecs = 20
+		for i in range(1, max_ingrs+1):
+			self.ingr_sets_counter += 1
+			self.fields['rec_ingr_name_%s' % i] = forms.ModelChoiceField(queryset=Ingredient.objects.all().order_by('name'), label='rec_ingredients', empty_label='')
+			self.fields['rec_ingr_val_%s' % i] = forms.FloatField()
+			self.fields['rec_ingr_unit_%s' % i] = forms.ModelChoiceField(queryset=IngredientUnit.objects.all(), empty_label='')
+		for i in range(1, max_brecs+1):
+			self.brecs_sets_counter += 1
+			self.fields['rec_brec_name_%s' % i] = forms.ModelChoiceField(queryset=BaseRecipe.objects.all().order_by('name'), label='rec_ingredients', empty_label='')
+			self.fields['rec_brec_val_%s' % i] = forms.FloatField()
+			
 
 
 # class IngredientUnitForm(forms.ModelForm):
