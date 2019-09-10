@@ -1,17 +1,7 @@
 
 from django.contrib import admin
 from django.urls import path, include
-
-#from ingredients.views import (
-    #RecipeListView, 
-    #RecipeDetailView, 
-    #IngredientCreateView,
-    #RecipeCreateView
-#)
-
 from ingredients import views as ingrViews
-
-#from users import views as user_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),

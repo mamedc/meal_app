@@ -15,9 +15,7 @@ class Ingredient(models.Model):
 	wiki = models.URLField(max_length=250, default=None)
 	def __str__(self): 
 		return f"{self.name}"
-	# def get_absolute_url(self):
-	# 	return reverse('ingredient-page', kwargs={'ingredient_id': self.pk})
-
+	
 
 class BaseRecipe(models.Model):
 	name = models.CharField(max_length=64, unique=True)
