@@ -8,13 +8,15 @@ urlpatterns = [
     path('add_ingredient/', ingrViews.addIngredient, name='addIngredient'),
     path('add_baserecipe/', ingrViews.addBaseRecipe, name='addBaseRecipe'),
     path('add_recipe/', ingrViews.addRecipe, name='addRecipe'),
+    path('manage_ingredients/', ingrViews.manageIngredients, name='manageIngredients'),
+    path('ingredient/<int:ingredient_id>/', ingrViews.ingredient, name='ingredient-page'),
+    path('recipe/<int:recipe_id>/', ingrViews.recipe, name='recipe-page'),
 
     #path('', include('blog.urls')),
     
     #path('ingredients/', ingrs_views.ingredients, name='ingredients-page'),
     
-    #path('ingredient/<int:ingredient_id>/', ingrs_views.ingredient, name='ingredient-page'),
-
+    
     #path('ingredients/new/', IngredientCreateView.as_view(), name='ingredient-create'),
     
     #path('recipes/', ingrs_views.recipes, name='recipes-page'),

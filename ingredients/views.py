@@ -148,6 +148,64 @@ def addRecipe(request):
 
 
 
+def manageIngredients(request):
+	
+	context = {
+		'current_url': resolve(request.path_info).url_name, 
+		'ingredients': Ingredient.objects.all()}
+
+	# IngredientFormSet = modelformset_factory(Ingredient, fields=('name', 'unit', 'wiki'))
+	# if request.method == 'POST':
+	# 	formset = IngredientFormSet(request.POST, request.FILES)
+	# 	if formset.is_valid():
+	# 		formset.save()
+ #            # do something.
+ #    else:
+ #       formset = IngredientFormSet()
+ #    return render_to_response("ingredients/manage_ingredients.html", {
+ #       "formset": formset,
+ #    })
+	return render(request, 'ingredients/manage_ingredients.html', context)
+
+
+
+def ingredient(request, ingredient_id):
+	try:
+		ingredient = Ingredient.objects.get(pk=ingredient_id)
+		units_string = ', '.join(ingredient.unit.all().values_list('unitName', flat=True))
+		recipes = Rec_Ingredient_Amount.objects.filter(ingredient=ingredient)
+
+	except Ingredient.DoesNotExist:
+		raise Http404("Ingredient does not exist")
+
+	context = {
+		'ingredient': ingredient, 
+		'units_string': units_string,
+		'recipes': recipes, 
+	}
+
+	#assert False, 'nnnn'
+
+	return render(request, 'ingredients/ingredient.html', context)
+
+
+
+def recipe(request, recipe_id):
+
+	#assert False, 'dfsdf'
+
+	try:
+		recipe = Recipe.objects.get(pk=recipe_id)
+		recipeIngredients = Rec_Ingredient_Amount.objects.filter(recipe=recipe)
+	
+	except Recipe.DoesNotExist:
+		raise Http404("Recipe does not exist")
+
+	context = {'recipe': recipe, 'recipeIngredients': recipeIngredients}
+	
+	return render(request, 'ingredients/recipe.html', context)
+
+
 
 # def ingredients(request):
 # 	context = {'ingredients': Ingredient.objects.all()}
@@ -187,35 +245,8 @@ def addRecipe(request):
 
 
 
-# def recipe(request, recipe_id):
-# 	try:
-# 		recipe = Recipe.objects.get(pk=recipe_id)
-# 		recipeIngredients = IngrQuantity.objects.filter(recipe=recipe)
-
-# 	except Recipe.DoesNotExist:
-# 		raise Http404("Recipe does not exist")
-
-# 	context = {
-# 		'recipe': recipe, 
-# 		'recipeIngredients': recipeIngredients, 
-# 	}
-# 	return render(request, 'ingredients/recipe.html', context)
 
 
-
-# def ingredient(request, ingredient_id):
-# 	try:
-# 		ingredient = Ingredient.objects.get(pk=ingredient_id)
-# 		recipes = IngrQuantity.objects.filter(ingr=ingredient)
-
-# 	except Ingredient.DoesNotExist:
-# 		raise Http404("Ingredient does not exist")
-
-# 	context = {
-# 		'ingredient': ingredient, 
-# 		'recipes': recipes, 
-# 	}
-# 	return render(request, 'ingredients/ingredient.html', context)
 
 
 
@@ -329,22 +360,3 @@ def addRecipe(request):
 # from django.forms.models import modelformset_factory
 # from django.shortcuts import render_to_response
 
-# def manage_ingredient(request):
-	
-# 	context = {
-# 		'current_url': resolve(request.path_info).url_name, 
-# 		'ingredients': Ingredient.objects.all()}
-
-#     #IngredientFormSet = modelformset_factory(
-#     #	Ingredient, fields=('name', 'unit', 'wiki'))
-#     #if request.method == 'POST':
-#     #    formset = IngredientFormSet(request.POST, request.FILES)
-#     #    if formset.is_valid():
-#     #        formset.save()
-#             # do something.
-#     #else:
-#     #    formset = IngredientFormSet()
-#     #return render_to_response("ingredients/manage_ingredients.html", {
-#     #    "formset": formset,
-#     #})
-# 	return render(request, 'ingredients/manage_ingredients.html', context)

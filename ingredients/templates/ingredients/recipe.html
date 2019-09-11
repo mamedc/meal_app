@@ -12,9 +12,11 @@
 
 	<ul>
 		{% for ingr in recipeIngredients %}
-			<li>{{ ingr.ingr.name }} {{ ingr.quantity }} 
-				<a href="{% url 'ingredient-page' ingr.ingr_id %}">(i)</a></li>
-			<!--li><a href="{% url 'ingredient-page' ingr.ingr_id %}">{{ ingr.ingr.name }}</a></li-->
+			<li>
+				{{ ingr.ingredient.name }} {{ ingr.amount }} {{ ingr.ingredientUnit }} 
+				<a href="{% url 'ingredient-page' ingr.ingredient_id %}">(i)</a>
+			</li>
+			
 		{% empty %}
 			<li>No ingredients.</li>
 		{% endfor %}

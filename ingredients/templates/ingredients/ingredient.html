@@ -11,8 +11,9 @@
 			</a>
 		</span>
 	</h2>
+		
+	<p>{{ units_string }}</p>
 	
-	<p>{{ ingredient.unit }}</p>
 	
 	<br>
 	<h4>Related Recipes</h4>
@@ -26,7 +27,7 @@
 	</ul>
 
 	<br>
-	<a href="{% url 'manage_ingredient' %}">Back to all ingredients</a>
+	<a href="{% url 'manageIngredients' %}">Back to all ingredients</a>
 
 </div>
 {% endblock content %}
